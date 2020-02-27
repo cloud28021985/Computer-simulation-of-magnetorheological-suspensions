@@ -1,4 +1,4 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 subroutine read_sigma(n_ext, chi, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_sat)
@@ -7,7 +7,7 @@ subroutine read_sigma(n_ext, chi, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_
     sigma_mean(n_ext + 1), sigma_mean_sat(n_ext + 1), &
     gamma(n_ext + 1, 4), sigma(n_ext + 1, 4), sigma_sat(n_ext + 1, 4)
     real h(2) /65e3, 95e3/ ! magnetic field
-    character(256) sigma_vs_gamma(4), sigma_vs_gamma_sat(4), sigma_mean_vs_gamma_sat
+    character(256) sigma_vs_gamma(2), sigma_vs_gamma_sat(2), sigma_mean_vs_gamma_sat
 
     character(256) sigma_mean_vs_gamma(2) /'data/sigma_mean_vs_gamma_h_1.txt', &
                                            'data/sigma_mean_vs_gamma_h_2.txt'/
@@ -16,7 +16,7 @@ subroutine read_sigma(n_ext, chi, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_
 
     print '(a/)', 'Reading sigma data'
 
-    do j = 1, 4
+    do j = 1, 2
         open(1, file = sigma_vs_gamma(j))
         open(2, file = sigma_vs_gamma_sat(j))
         do i = 1, n_ext + 1
@@ -30,7 +30,7 @@ subroutine read_sigma(n_ext, chi, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_
     do i = 1, n_ext + 1
         res = 0.0
         res_sat = 0.0
-        do j = 1, 4
+        do j = 1, 2
             res = res + sigma(i, j)
             res_sat = res_sat + sigma_sat(i, j)
         end do
@@ -56,19 +56,3 @@ subroutine read_sigma(n_ext, chi, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_
     end do
     close(4)
 end subroutine read_sigma
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
