@@ -1,4 +1,4 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 ! define the system size
@@ -387,11 +387,3 @@ subroutine worker_sigma(n_part, n_up, upper_wall, d_cyl, pi, sigma, x, z, f_x, f
     end do
     sigma = 2.0*my_sum / (pi*d_cyl*delta)
 end subroutine worker_sigma
-
-
-
-
-
-
-
-
