@@ -1,8 +1,8 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 subroutine main_alrorythm(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl, phi, pi, r_cut, time_step, &
-    time_step_forcecap, vtf, cross_section, sigma_vs_gamma, model, rank)
+    time_step_forcecap, vtf, sigma_vs_gamma, model, rank)
     include 'mpif.h'
     integer i, model, n_ext, n_int, n_part, n_up, n_down, n_free, rank, &
     bottom_wall(n_part), upper_wall(n_part), free_part(n_part)
@@ -11,7 +11,7 @@ subroutine main_alrorythm(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl,
     x(n_part),   y(n_part),   z(n_part), &
     m_x(n_part), m_y(n_part), m_z(n_part), &
     f_x(n_part), f_z(n_part)
-    character(256) cross_section, vtf, sigma_vs_gamma
+    character(256) vtf, sigma_vs_gamma
 
     t = 0.0
 
@@ -91,13 +91,6 @@ subroutine main_alrorythm(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl,
         print '(f0.2, a, f0.2, a/)', delta_t / 60.0, ' min = ', delta_t / 3600.0, ' hours'
     end if
 
-    ! open cross section file
-    open(4, file = cross_section)
-    call write_cross_section_title(n_part, h_cyl)
-
-    call write_cross_section(n_part, x, y, z)
-    close(4)
-
     ! SHEAR INTEGRATION
     if(rank == 0) then
         print '(a)', 'Shear integration:'
@@ -156,27 +149,13 @@ subroutine plan_simulate(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl, 
     include 'mpif.h'
     integer i, n_part, n_ext, n_int, rank, size
     real b, d_cyl, d_part, eps_st, h_cyl, phi, pi, r_cut, time_step, time_step_forcecap
-    character(256) sigma_vs_gamma(4), sigma_vs_gamma_sat(4)
+    character(256) sigma_vs_gamma(2), sigma_vs_gamma_sat(2)
 
-    character(256) vtf(4) /'vmd/r_vs_t_experiment_1.vtf', &
-                           'vmd/r_vs_t_experiment_2.vtf', &
-                           'vmd/r_vs_t_experiment_3.vtf', &
-                           'vmd/r_vs_t_experiment_4.vtf'/
+    character(256) vtf(2) /'vmd/r_vs_t_experiment_1.vtf', &
+                           'vmd/r_vs_t_experiment_2.vtf'/
 
-    character(256) vtf_sat(4) /'vmd/r_vs_t_experiment_sat_1.vtf', &
-                               'vmd/r_vs_t_experiment_sat_2.vtf', &
-                               'vmd/r_vs_t_experiment_sat_3.vtf', &
-                               'vmd/r_vs_t_experiment_sat_4.vtf'/
-
-    character(256) cross_section(4) /'vmd/cross_section_1.vtf', &
-                                     'vmd/cross_section_2.vtf', &
-                                     'vmd/cross_section_3.vtf', &
-                                     'vmd/cross_section_4.vtf'/
-
-    character(256) cross_section_sat(4) /'vmd/cross_section_sat_1.vtf', &
-                                         'vmd/cross_section_sat_2.vtf', &
-                                         'vmd/cross_section_sat_3.vtf', &
-                                         'vmd/cross_section_sat_4.vtf'/
+    character(256) vtf_sat(2) /'vmd/r_vs_t_experiment_sat_1.vtf', &
+                               'vmd/r_vs_t_experiment_sat_2.vtf'/
 
     if(rank == 0) then
         print '(a/)', 'Main alrorythm for various phi'
@@ -185,10 +164,10 @@ subroutine plan_simulate(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl, 
     do i = 1, size
         if(rank == i - 1) then
             call main_alrorythm(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl, phi, pi, r_cut, time_step, &
-            time_step_forcecap, vtf(i), cross_section(i), sigma_vs_gamma(i), 1, rank)
+            time_step_forcecap, vtf(i), sigma_vs_gamma(i), 1, rank)
 
             call main_alrorythm(n_part, n_ext, n_int, b, d_cyl, d_part, eps_st, h_cyl, phi, pi, r_cut, time_step, &
-            time_step_forcecap, vtf_sat(i), cross_section_sat(i), sigma_vs_gamma_sat(i), 0, rank)
+            time_step_forcecap, vtf_sat(i), sigma_vs_gamma_sat(i), 0, rank)
         end if
     end do
 end subroutine plan_simulate
@@ -198,7 +177,7 @@ subroutine plan_read(n_ext, chi, delta_t, m_s, mu_0, pi, sigma_vs_gamma, sigma_v
     integer n_ext, rank
     real chi, m_s, mu_0, pi
     double precision delta_t
-    character(256) sigma_vs_gamma(4), sigma_vs_gamma_sat(4)
+    character(256) sigma_vs_gamma(2), sigma_vs_gamma_sat(2)
     if(rank == 0) then
         print '(a//)', '----------------------------'
         print '(a, f0.2, a, f0.2, a, $)', 'Total runtime = ', delta_t, ' sec = ', delta_t / 60.0, ' min = '
@@ -213,7 +192,6 @@ program main
     include 'mpif.h'
     integer, parameter :: &
 
-    !n_part = 2, &
     n_part = 40, &
     !n_part = 1000, & ! number of the particles in the system
 
@@ -231,15 +209,11 @@ program main
     real b, mu_0, r_cut
     double precision delta_t, finish_time, start_time
 
-    character(256) sigma_vs_gamma(4) /'data/sigma_vs_gamma_experiment_1.txt', &
-                                      'data/sigma_vs_gamma_experiment_2.txt', &
-                                      'data/sigma_vs_gamma_experiment_3.txt', &
-                                      'data/sigma_vs_gamma_experiment_4.txt'/
+    character(256) sigma_vs_gamma(2) /'data/sigma_vs_gamma_experiment_1.txt', &
+                                      'data/sigma_vs_gamma_experiment_2.txt'/
 
-    character(256) sigma_vs_gamma_sat(4) /'data/sigma_vs_gamma_experiment_sat_1.txt', &
-                                          'data/sigma_vs_gamma_experiment_sat_2.txt', &
-                                          'data/sigma_vs_gamma_experiment_sat_3.txt', &
-                                          'data/sigma_vs_gamma_experiment_sat_4.txt'/
+    character(256) sigma_vs_gamma_sat(2) /'data/sigma_vs_gamma_experiment_sat_1.txt', &
+                                          'data/sigma_vs_gamma_experiment_sat_2.txt'/
 
     form_cyl = 1.0
     !form_cyl = 5.7 ! form-factor of cylinder
@@ -278,22 +252,3 @@ program main
 
     call plan_read(n_ext, chi, delta_t, m_s, mu_0, pi, sigma_vs_gamma, sigma_vs_gamma_sat, rank)
 end program main
-
-! Total runtime = 20223.44 sec = 337.06 min = 5.62 hours
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
