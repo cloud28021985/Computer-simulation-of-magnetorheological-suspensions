@@ -1,4 +1,4 @@
-# 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+# 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 set term pdfcairo \
@@ -15,9 +15,7 @@ set bmargin 4.0
 set ylabel '{/:Italic σ}' font ',18'
 plot \
 'data/sigma_vs_gamma_experiment_1.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'red', \
-'data/sigma_vs_gamma_experiment_2.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'blue', \
-'data/sigma_vs_gamma_experiment_3.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'green', \
-'data/sigma_vs_gamma_experiment_4.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'black'
+'data/sigma_vs_gamma_experiment_2.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'blue'
 
 
 set o 'figs/sigma_vs_gamma_sat.pdf'
@@ -28,9 +26,7 @@ set bmargin 4.0
 set ylabel '{/:Italic σ_s}' font ',18'
 plot \
 'data/sigma_vs_gamma_experiment_sat_1.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'red', \
-'data/sigma_vs_gamma_experiment_sat_2.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'blue', \
-'data/sigma_vs_gamma_experiment_sat_3.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'green', \
-'data/sigma_vs_gamma_experiment_sat_4.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'black'
+'data/sigma_vs_gamma_experiment_sat_2.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'blue'
 
 
 set o 'figs/sigma_mean_vs_gamma.pdf'
@@ -60,23 +56,3 @@ set bmargin 4.0
 set ylabel '{/:Italic σ_s}, kPa' font ',18'
 plot [] [0.0:]\
 'data/sigma_mean_vs_gamma_sat.txt' u 1:2 w lp pt 5 ps 0.2 lw 0.5 lt rgb 'black'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
