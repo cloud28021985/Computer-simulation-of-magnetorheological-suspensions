@@ -1,4 +1,4 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 ! squaring
@@ -88,12 +88,3 @@ time_step, x, y, z, m_x, m_y, m_z)
         end do
     end do
 end subroutine integrate_shear
-
-
-
-
-
-
-
-
-
