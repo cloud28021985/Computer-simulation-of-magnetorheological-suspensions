@@ -1,4 +1,4 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 subroutine write_start(n_part, d_cyl, d_part, h_cyl, phi)
@@ -20,14 +20,6 @@ subroutine write_vmd_title(n_part, h_cyl)
 end subroutine write_vmd_title
 
 
-subroutine write_cross_section_title(n_part, h_cyl)
-    integer n_part
-    real h_cyl
-    write(4, '(a, 3f10.6)') 'unitcell', h_cyl, h_cyl, h_cyl
-    write(4, '(a, i0, a/)') 'atom 0:', n_part - 1, ' radius 0.5 name Z'
-end subroutine write_cross_section_title
-
-
 ! writting x, y, z coordinates of the particles to text files
 subroutine write_vmd(n_part, x, y, z)
     integer i, n_part
@@ -38,40 +30,3 @@ subroutine write_vmd(n_part, x, y, z)
     end do
     write(1, '(a)') ''
 end subroutine write_vmd
-
-
-subroutine write_cross_section(n_part, x, y, z)
-    integer i, n_part
-    real x(n_part), y(n_part), z(n_part)
-    write(4, '(a)') 'timestep ordered'
-    do i = 1, n_part
-        if(z(i) < 0.0) then
-            write(4, '(3f20.6)') x(i), y(i), z(i)
-        end if
-    end do
-    write(4, '(a)') ''
-end subroutine write_cross_section
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
