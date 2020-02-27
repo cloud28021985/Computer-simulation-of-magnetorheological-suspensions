@@ -1,4 +1,4 @@
-! 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+! 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 subroutine worker_sigma_kilo_si(chi, h, mu_0, pi, sigma, sigma_kilo_si)
