@@ -1,9 +1,9 @@
-# 2019 Computer simulations of anisotropic structures in magnetorheological elastomers
+# 2020 Computer simulations of anisotropic structures in magnetorheological elastomers
 
 
 CFLAGS = -c -Ofast -Wall
 RUN = mpirun -np # run command of programm 'prog'
-N_PROC = 4 # number of the processors
+N_PROC = 2 # number of the processors
 SRCPATH = src/
 OBJPATH = obj/
 VMDPATH = vmd/
@@ -46,10 +46,3 @@ clean:
 	mkdir $(DATAPATH)
 	mkdir $(FIGPATH)
 	cp $(SCRIPT) $(VMDPATH)$(SCRIPT)
-
-
-
-
-
-
-
